@@ -2,7 +2,7 @@
 
 ![chatlog](https://github.com/user-attachments/assets/e085d3a2-e009-4463-b2fd-8bd7df2b50c3)
 
-_聊天记录工具，帮助大家轻松使用自己的聊天数据_
+_A chat log tool that helps you easily use and analyze your own chat data_
 
 [![ImgMCP](https://cdn.imgmcp.com/imgmcp-logo-small.png)](https://imgmcp.com)
 
@@ -11,120 +11,106 @@ _聊天记录工具，帮助大家轻松使用自己的聊天数据_
 [![GitHub release](https://img.shields.io/github/release/sjzar/chatlog.svg)](https://github.com/sjzar/chatlog/releases)
 [![GitHub license](https://img.shields.io/github/license/sjzar/chatlog.svg)](https://github.com/sjzar/chatlog/blob/main/LICENSE)
 
-
 </div>
 
-## Feature
+## Features
 
-- 从本地数据库文件中获取聊天数据
-- 支持 Windows / macOS 系统，兼容微信 3.x / 4.x 版本
-- 支持获取数据与图片密钥 (Windows < 4.0.3.36 / macOS < 4.0.3.80)
-- 支持图片、语音等多媒体数据解密，支持 wxgf 格式解析
-- 支持自动解密数据库，并提供新消息 Webhook 回调
-- 提供 Terminal UI 界面，同时支持命令行工具和 Docker 镜像部署
-- 提供 HTTP API 服务，可轻松查询聊天记录、联系人、群聊、最近会话等信息
-- 支持 MCP Streamable HTTP 协议，可与 AI 助手无缝集成
-- 支持多账号管理，可在不同账号间切换
+- Extract chat data from local database files
+- Supports Windows and macOS, compatible with WeChat 3.x/4.x versions
+- Fetch data and image keys (Windows < 4.0.3.36 / macOS < 4.0.3.80)
+- Supports decryption of images, audio, and other multimedia content, including wxgf format parsing
+- Automatic database decryption and webhook callback for new messages
+- Provides a Terminal UI, as well as command line tools and Docker images
+- Offers an HTTP API service for easy access to chat logs, contacts, groups, and recent conversations
+- Supports MCP Streamable HTTP protocol for seamless AI assistant integration
+- Multi-account management, allowing you to switch between different accounts
 
 ## Quick Start
 
-### 基本步骤
+### Basic Steps
 
-1. **安装 Chatlog**：[下载预编译版本](#下载预编译版本) 或 [使用 Go 安装](#从源码安装)
-2. **运行程序**：执行 `chatlog` 启动 Terminal UI 界面
-3. **解密数据**：选择 `解密数据` 菜单项
-4. **开启 HTTP 服务**：选择 `开启 HTTP 服务` 菜单项
-5. **访问数据**：通过 [HTTP API](#http-api) 或 [MCP 集成](#mcp-集成) 访问聊天记录
+1. **Install Chatlog:** [Download prebuilt binaries](#download-prebuilt-binaries) or [install with Go](#install-from-source)
+2. **Run the app:** Launch by running `chatlog` for the Terminal UI
+3. **Decrypt data:** Select the `Decrypt Data` menu item
+4. **Start HTTP service:** Select the `Start HTTP Service` menu item
+5. **Access your data:** Use the [HTTP API](#http-api) or [MCP integration](#mcp-integration) to access your chat logs
 
-> 💡 **提示**: 如果电脑端微信聊天记录不全，可以[从手机端迁移数据](#从手机迁移聊天记录)  
+> 💡 **Tip:** If the chat history on your desktop WeChat is incomplete, [migrate your data from mobile](#migrating-chat-history-from-phone)
 
-### 常见问题快速解决
+### Troubleshooting Quick Reference
 
-- **macOS 用户**：获取密钥前需[临时关闭 SIP](#macos-版本说明)
-- **Windows 用户**：遇到界面显示问题请[使用 Windows Terminal](#windows-版本说明)
-- **集成 AI 助手**：查看 [MCP 集成指南](#mcp-集成)
-- **无法获取密钥**：查看 [FAQ](https://github.com/sjzar/chatlog/issues/197)
+- **macOS users:** Temporarily [disable SIP](#macos-notes) before obtaining keys
+- **Windows users:** For UI issues, [use Windows Terminal](#windows-notes)
+- **AI assistant integration:** See [MCP Integration Guide](#mcp-integration)
+- **Can't get keys:** See the [FAQ](https://github.com/sjzar/chatlog/issues/197)
 
-## 安装指南
+## Installation Guide
 
-### 从源码安装
+### Install from Source
 
 ```bash
 go install github.com/sjzar/chatlog@latest
 ```
+> 💡 **Tip:** Some features require cgo; make sure you have a C build environment.
 
-> 💡 **提示**: 部分功能有 cgo 依赖，编译前需确认本地有 C 编译环境。
+### Download Prebuilt Binaries
 
-### 下载预编译版本
+Download the release for your OS from the [Releases](https://github.com/sjzar/chatlog/releases) page.
 
-访问 [Releases](https://github.com/sjzar/chatlog/releases) 页面下载适合您系统的预编译版本。
+## Usage Guide
 
-## 使用指南
+### Terminal UI Mode
 
-### Terminal UI 模式
-
-最简单的使用方式是通过 Terminal UI 界面操作：
+The easiest way is to use the Terminal UI:
 
 ```bash
 chatlog
 ```
+Navigation:
+- Use `↑` `↓` keys to move through menu items
+- Press `Enter` to select
+- Press `Esc` to return
+- Press `Ctrl+C` to exit
 
-操作方法：
-- 使用 `↑` `↓` 键选择菜单项
-- 按 `Enter` 确认选择
-- 按 `Esc` 返回上级菜单
-- 按 `Ctrl+C` 退出程序
+### Command Line Mode
 
-### 命令行模式
-
-对于熟悉命令行的用户，可以直接使用以下命令：
+For advanced users, use these commands:
 
 ```bash
-# 获取微信数据密钥
+# Get WeChat data keys
 chatlog key
 
-# 解密数据库文件
+# Decrypt database files
 chatlog decrypt
 
-# 启动 HTTP 服务
+# Start HTTP service
 chatlog server
 ```
 
-### Docker 部署
+### Docker Deployment
 
-由于 Docker 部署时，程序运行环境与宿主机隔离，所以不支持获取密钥等操作，需要提前获取密钥数据。
+Due to isolation, you can't obtain keys within Docker. Get key data on your host first.
 
-一般用于 NAS 等设备部署，详细指南可参考 [Docker 部署指南](docs/docker.md)
+Common for NAS or server deployment — see the [Docker Deployment Guide](docs/docker.md) for details.
 
-**0. 获取密钥信息**
-
+**0. Get your keys**
 ```shell
-# 从本机运行 chatlog 获取密钥信息
 $ chatlog key
 Data Key: [c0163e***ac3dc6]
 Image Key: [38636***653361]
 ```
 
-**1. 拉取镜像**
-
-chatlog 提供了两个镜像源：
-
-**Docker Hub**:
+**1. Pull the image**
 ```shell
 docker pull sjzar/chatlog:latest
-```
-
-**GitHub Container Registry (ghcr)**:
-```shell
+# or
 docker pull ghcr.io/sjzar/chatlog:latest
 ```
-
-> 💡 **镜像地址**: 
-> - Docker Hub: https://hub.docker.com/r/sjzar/chatlog
+> 💡 **Images:**  
+> - Docker Hub: https://hub.docker.com/r/sjzar/chatlog  
 > - GitHub Container Registry: https://ghcr.io/sjzar/chatlog
 
-**2. 运行容器**
-
+**2. Run the container**
 ```shell
 $ docker run -d \
   --name chatlog \
@@ -133,225 +119,154 @@ $ docker run -d \
   sjzar/chatlog:latest
 ```
 
-### 从手机迁移聊天记录
+### Migrating Chat History from Phone
 
-如果电脑端微信聊天记录不全，可以从手机端迁移数据：
+If your desktop chat logs are incomplete, migrate from your phone:
 
-1. 打开手机微信，进入 `我 - 设置 - 通用 - 聊天记录迁移与备份`
-2. 选择 `迁移 - 迁移到电脑`，按照提示操作
-3. 完成迁移后，重新运行 `chatlog` 获取密钥并解密数据
+1. On your phone, go to `Me - Settings - General - Chat Log Migration & Backup`
+2. Select `Migrate - Migrate to Computer` and follow the instructions
+3. After migration, rerun `chatlog` to get the keys and decrypt your data
 
-> 此操作不会影响手机上的聊天记录，只是将数据复制到电脑端
+> This operation does NOT remove anything from your phone; it just copies to your PC.
 
-## 平台特定说明
+## Platform-Specific Notes
 
-### Windows 版本说明
+### Windows Notes
 
-如遇到界面显示异常（如花屏、乱码等），请使用 [Windows Terminal](https://github.com/microsoft/terminal) 运行程序
+If you encounter display issues (garbled UI, etc.), use [Windows Terminal](https://github.com/microsoft/terminal).
 
-### macOS 版本说明
+### macOS Notes
 
-macOS 用户在获取密钥前需要临时关闭 SIP（系统完整性保护）：
+macOS users must temporarily disable SIP (System Integrity Protection) before obtaining keys:
 
-1. **关闭 SIP**：
-   ```shell
-   # 进入恢复模式
-   # Intel Mac: 重启时按住 Command + R
-   # Apple Silicon: 重启时长按电源键
-   
-   # 在恢复模式中打开终端并执行
-   csrutil disable
-   
-   # 重启系统
-   ```
+1. **Disable SIP:**
+    ```shell
+    # Enter Recovery Mode
+    # Intel Mac: Restart and hold Command + R
+    # Apple Silicon: Restart and hold the power button
 
-2. **安装必要工具**：
-   ```shell
-   # 安装 Xcode Command Line Tools
-   xcode-select --install
-   ```
+    # In Recovery, open Terminal and run:
+    csrutil disable
 
-3. **获取密钥后**：可以重新启用 SIP（`csrutil enable`），不影响后续使用
+    # Reboot
+    ```
+2. **Install required tools**
+    ```shell
+    xcode-select --install
+    ```
+3. **After fetching keys:** You can re-enable SIP (`csrutil enable`); this won't affect usage
 
-> Apple Silicon 用户注意：确保微信、chatlog 和终端都不在 Rosetta 模式下运行
+> Apple Silicon users: Ensure WeChat, chatlog, and Terminal are *not* running under Rosetta.
 
 ## HTTP API
 
-启动 HTTP 服务后（默认地址 `http://127.0.0.1:5030`），可通过以下 API 访问数据：
+After starting the HTTP service (`http://127.0.0.1:5030` by default), use these APIs:
 
-### 聊天记录查询
+### Querying Chat Logs
 
 ```
 GET /api/v1/chatlog?time=2023-01-01&talker=wxid_xxx
 ```
+Parameters:
+- `time`: Date range, e.g. `YYYY-MM-DD` or `YYYY-MM-DD~YYYY-MM-DD`
+- `talker`: Chat target (wxid, group ID, remark, nickname, etc.)
+- `limit`: Number of records to return
+- `offset`: Pagination offset
+- `format`: Output format: `json`, `csv`, or plain text
 
-参数说明：
-- `time`: 时间范围，格式为 `YYYY-MM-DD` 或 `YYYY-MM-DD~YYYY-MM-DD`
-- `talker`: 聊天对象标识（支持 wxid、群聊 ID、备注名、昵称等）
-- `limit`: 返回记录数量
-- `offset`: 分页偏移量
-- `format`: 输出格式，支持 `json`、`csv` 或纯文本
+### Other API Endpoints
 
-### 其他 API 接口
+- **Contact list**: `GET /api/v1/contact`
+- **Group list**: `GET /api/v1/chatroom`
+- **Session list**: `GET /api/v1/session`
 
-- **联系人列表**：`GET /api/v1/contact`
-- **群聊列表**：`GET /api/v1/chatroom`
-- **会话列表**：`GET /api/v1/session`
+### Multimedia Content
 
-### 多媒体内容
+Media files are served over HTTP:
 
-聊天记录中的多媒体内容会通过 HTTP 服务进行提供，可通过以下路径访问：
+- **Images**: `GET /image/<id>`
+- **Videos**: `GET /video/<id>`
+- **Files**: `GET /file/<id>`
+- **Audio**: `GET /voice/<id>`
+- **Raw data**: `GET /data/<relative path>`
 
-- **图片内容**：`GET /image/<id>`
-- **视频内容**：`GET /video/<id>`
-- **文件内容**：`GET /file/<id>`
-- **语音内容**：`GET /voice/<id>`
-- **多媒体内容**：`GET /data/<data dir relative path>`
-
-当请求图片、视频、文件内容时，将返回 302 跳转到多媒体内容 URL。  
-当请求语音内容时，将直接返回语音内容，并对原始 SILK 语音做了实时转码 MP3 处理。  
-多媒体内容 URL 地址为基于`数据目录`的相对地址，请求多媒体内容将直接返回对应文件，并针对加密图片做了实时解密处理。
+Image/video/file URLs will return a 302 redirect; audio files are transcoded to MP3 on the fly. Encrypted images are decrypted in real-time when requested.
 
 ## Webhook
 
-需开启自动解密功能，当收到特定新消息时，可以通过 HTTP POST 请求将消息推送到指定的 URL。
+Enable auto-decrypt. When specific new messages are received, they can be pushed to a specified URL via HTTP POST.
 
-> 延迟测试: 本地服务消息回调延迟约 13 秒; 远程同步消息回调延迟约 45 秒。
+For local services, callback latency is about 13s; remote sync callback ~45s.
 
-#### 0. 回调配置
-
-使用 TUI 模式的话，在 `$HOME/.chatlog/chatlog.json` 配置文件中，新增 `webhook` 配置。  
-（Windows 用户的配置文件在 `%USERPROFILE%/.chatlog/chatlog.json`)
-
+**Example configuration:**
+In `$HOME/.chatlog/chatlog.json` (on Windows, `%USERPROFILE%/.chatlog/chatlog.json`):
 ```json
 {
   "history": [],
   "last_account": "wxuser_x",
   "webhook": {
-    "host": "localhost:5030",                   # 消息中的图片、文件等 URL host
+    "host": "localhost:5030",
     "items": [
       {
-        "url": "http://localhost:8080/webhook", # 必填，webhook 请求的URL，可配置为 n8n 等 webhook 入口 
-        "talker": "wxid_123",                   # 必填，需要监控的私聊、群聊名称
-        "sender": "",                           # 选填，消息发送者
-        "keyword": ""                           # 选填，关键词
+        "url": "http://localhost:8080/webhook",
+        "talker": "wxid_123",
+        "sender": "",
+        "keyword": ""
       }
     ]
   }
 }
 ```
+Or, set via environment variables in server mode.
 
-使用 server 模式的话，可以通过 `CHATLOG_WEBHOOK` 环境变量进行设置。
+## MCP Integration
 
-```shell
-# 方案 1
-CHATLOG_WEBHOOK='{"host":"localhost:5030","items":[{"url":"http://localhost:8080/proxy","talker":"wxid_123","sender":"","keyword":""}]}'
+Chatlog supports the MCP (Model Context Protocol) and can be seamlessly integrated with MCP-compatible AI assistants.
 
-# 方案 2（任选一种）
-CHATLOG_WEBHOOK_HOST="localhost:5030"
-CHATLOG_WEBHOOK_ITEMS='[{"url":"http://localhost:8080/proxy","talker":"wxid_123","sender":"","keyword":""}]'
-```
-
-#### 1. 测试效果
-
-启动 chatlog 并开启自动解密功能，测试回调效果
-
-```shell
-POST /webhook HTTP/1.1
-Host: localhost:8080
-Accept-Encoding: gzip
-Content-Length: 386
-Content-Type: application/json
-User-Agent: Go-http-client/1.1
-
-Body:
-{
-  "keyword": "",
-  "lastTime": "2025-08-27 00:00:00",
-  "length": 1,
-  "messages": [
-    {
-      "seq": 1756225000000,
-      "time": "2025-08-27T00:00:00+08:00",
-      "talker": "wxid_123",
-      "talkerName": "",
-      "isChatRoom": false,
-      "sender": "wxid_123",
-      "senderName": "Name",
-      "isSelf": false,
-      "type": 1,
-      "subType": 0,
-      "content": "测试消息",
-      "contents": {
-        "host": "localhost:5030"
-      }
-    }
-  ],
-  "sender": "",
-  "talker": "wxid_123"
-}
-```
-
-## MCP 集成
-
-Chatlog 支持 MCP (Model Context Protocol) 协议，可与支持 MCP 的 AI 助手无缝集成。  
-启动 HTTP 服务后，通过 Streamable HTTP Endpoint 访问服务：
+Start HTTP service, then access the Streamable HTTP endpoint:
 
 ```
 GET /mcp
 ```
 
-### 快速集成
+**Example integrations:**
 
-Chatlog 可以与多种支持 MCP 的 AI 助手集成，包括：
+- **ChatWise**: Add `http://127.0.0.1:5030/mcp` in tool settings
+- **Cherry Studio**: Add `http://127.0.0.1:5030/mcp` in MCP server settings
 
-- **ChatWise**: 直接支持 Streamable HTTP，在工具设置中添加 `http://127.0.0.1:5030/mcp`
-- **Cherry Studio**: 直接支持 Streamable HTTP，在 MCP 服务器设置中添加 `http://127.0.0.1:5030/mcp`
+For clients that don't support Streamable HTTP, use [mcp-proxy](https://github.com/sparfenyuk/mcp-proxy):
 
-对于不直接支持 Streamable HTTP 的客户端，可以使用 [mcp-proxy](https://github.com/sparfenyuk/mcp-proxy) 工具转发请求：
+- **Claude Desktop**: Supported via mcp-proxy; requires `claude_desktop_config.json`
+- **Monica Code**: Supported via mcp-proxy; configure in VSCode plugin
 
-- **Claude Desktop**: 通过 mcp-proxy 支持，需要配置 `claude_desktop_config.json`
-- **Monica Code**: 通过 mcp-proxy 支持，需要配置 VSCode 插件设置
+See the [MCP Integration Guide](docs/mcp.md) for more.
 
-### 详细集成指南
+## Prompt Examples
 
-查看 [MCP 集成指南](docs/mcp.md) 获取各平台的详细配置步骤和注意事项。
+We've compiled some sample prompts to help you get the most out of Chatlog and your AI assistant. See the [Prompt Guide](docs/prompt.md) for more examples.
 
-## Prompt 示例
+You are welcome to share feedback and your own prompts in [Discussions](https://github.com/sjzar/chatlog/discussions)!
 
-为了帮助大家更好地利用 Chatlog 与 AI 助手，我们整理了一些 prompt 示例。希望这些 prompt 可以启发大家更有效地查询和分析聊天记录，获取更精准的信息。
+## Disclaimer
 
-查看 [Prompt 指南](docs/prompt.md) 获取详细示例。
+⚠️ **Important: Before using Chatlog, please carefully read the full [Disclaimer](./DISCLAIMER.md).**
 
-同时欢迎大家分享使用经验和 prompt！如果您有好的 prompt 示例或使用技巧，请通过 [Discussions](https://github.com/sjzar/chatlog/discussions) 进行分享，共同进步。
+This project is for learning, research, and personal legal use only; unauthorized or illegal use of others' data is strictly forbidden. Downloading, installing, or using this tool means you accept all the terms of the disclaimer and assume full responsibility and risk.
 
-## 免责声明
-
-⚠️ **重要提示：使用本项目前，请务必阅读并理解完整的 [免责声明](./DISCLAIMER.md)。**
-
-本项目仅供学习、研究和个人合法使用，禁止用于任何非法目的或未授权访问他人数据。下载、安装或使用本工具即表示您同意遵守免责声明中的所有条款，并自行承担使用过程中的全部风险和法律责任。
-
-### 摘要（请阅读完整免责声明）
-
-- 仅限处理您自己合法拥有的聊天数据或已获授权的数据
-- 严禁用于未经授权获取、查看或分析他人聊天记录
-- 开发者不对使用本工具可能导致的任何损失承担责任
-- 使用第三方 LLM 服务时，您应遵守这些服务的使用条款和隐私政策
-
-**本项目完全免费开源，任何以本项目名义收费的行为均与本项目无关。**
+**This project is entirely free and open source; any attempt to charge for it is unrelated to the project.**
 
 ## License
 
-本项目基于 [Apache-2.0 许可证](./LICENSE) 开源。
+Project is open source under [Apache-2.0 License](./LICENSE).
 
-## 隐私政策
+## Privacy Policy
 
-本项目不收集任何用户数据。所有数据处理均在用户本地设备上进行。使用第三方服务时，请参阅相应服务的隐私政策。
+This project does not collect any user data. All data processing is local to your device. For external services, see their privacy policy.
 
 ## Thanks
 
-- [@0xlane](https://github.com/0xlane) 的 [wechat-dump-rs](https://github.com/0xlane/wechat-dump-rs) 项目
-- [@xaoyaoo](https://github.com/xaoyaoo) 的 [PyWxDump](https://github.com/xaoyaoo/PyWxDump) 项目
-- [@git-jiadong](https://github.com/git-jiadong) 的 [go-lame](https://github.com/git-jiadong/go-lame) 和 [go-silk](https://github.com/git-jiadong/go-silk) 项目
-- [Anthropic](https://www.anthropic.com/) 的 [MCP]((https://github.com/modelcontextprotocol) ) 协议
-- 各个 Go 开源库的贡献者们
+- [@0xlane](https://github.com/0xlane) for [wechat-dump-rs](https://github.com/0xlane/wechat-dump-rs)
+- [@xaoyaoo](https://github.com/xaoyaoo) for [PyWxDump](https://github.com/xaoyaoo/PyWxDump)
+- [@git-jiadong](https://github.com/git-jiadong) for [go-lame](https://github.com/git-jiadong/go-lame) and [go-silk](https://github.com/git-jiadong/go-silk)
+- [Anthropic MCP](https://github.com/modelcontextprotocol)
+- And all the contributors of Go open source libraries!
