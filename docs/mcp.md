@@ -1,9 +1,9 @@
-# MCP 集成指南
+# MCP Integration Guide
 
-## 目录
-- [MCP 集成指南](#mcp-集成指南)
-  - [目录](#目录)
-  - [前期准备](#前期准备)
+## Table of Contents
+- [MCP Integration Guide](#mcp-integration-guide)
+  - [Table of Contents](#table-of-contents)
+  - [Preparation](#preparation)
     - [mcp-proxy](#mcp-proxy)
   - [ChatWise](#chatwise)
   - [Cherry Studio](#cherry-studio)
@@ -11,75 +11,75 @@
   - [Monica Code](#monica-code)
 
 
-## 前期准备
+## Preparation
 
-运行 `chatlog`，完成数据解密并开启 HTTP 服务
+Run `chatlog`, finish data decryption, and start the HTTP service.
 
 ### mcp-proxy
-如果遇到不支持 `SSE` 的客户端，可以尝试使用 `mcp-proxy` 将 `stdio` 的请求转换为 `SSE`。  
+If you encounter a client that does not support `SSE`, you can use `mcp-proxy` to convert `stdio` requests into `SSE`.
 
-项目地址：https://github.com/sparfenyuk/mcp-proxy
+Project: https://github.com/sparfenyuk/mcp-proxy
 
-安装方式：
+Installation:
 ```shell
-# 使用 uv 工具安装，也可参考项目文档的其他安装方式
+# Install via uv tool; see project docs for other installation methods
 uv tool install mcp-proxy
 
-# 查询 mcp-proxy 的路径，后续可直接使用该路径
+# Find the mcp-proxy binary path for later use
 which mcp-proxy
 /Users/sarv/.local/bin/mcp-proxy
 ```
 
 ## ChatWise
 
-- 官网：https://chatwise.app/
-- 使用方式：MCP SSE
-- 注意事项：使用 ChatWise 的 MCP 功能需要 Pro 权限
+- Website: https://chatwise.app/
+- Transport: MCP SSE
+- Note: ChatWise MCP features require a Pro account
 
-1. 在 `设置 - 工具` 下新建 `SSE 请求` 工具
+1. Create a new `SSE Request` tool under Settings -> Tools
 
 ![chatwise-1](https://github.com/user-attachments/assets/87e40f39-9fbc-4ff1-954a-d95548cde4c2)
 
-1. 在 URL 中填写 `http://127.0.0.1:5030/sse`，并勾选 `自动执行工具`，点击 `查看工具` 即可检查连接 `chatlog` 是否正常
+2. Set the tool URL to `http://127.0.0.1:5030/sse`, enable "Auto Execute Tool", and click "Inspect Tool" to verify the connection with chatlog.
 
 ![chatwise-2](https://github.com/user-attachments/assets/8f98ef18-8e6c-40e6-ae78-8cd13e411c36)
 
-3. 返回主页，选择支持 MCP 调用的模型，打开 `chatlog` 工具选项
+3. Return to the main page, choose an MCP-capable model, and enable the `chatlog` tool option.
 
 ![chatwise-3](https://github.com/user-attachments/assets/ea2aa178-5439-492b-a92f-4f4fc08828e7)
 
-4. 测试功能是否正常
+4. Test the integration.
 
 ![chatwise-4](https://github.com/user-attachments/assets/8f82cb53-8372-40ee-a299-c02d3399403a)
 
 ## Cherry Studio
 
-- 官网：https://cherry-ai.com/
-- 使用方式：MCP SSE
+- Website: https://cherry-ai.com/
+- Transport: MCP SSE
 
-1. 在 `设置 - MCP 服务器` 下点击 `添加服务器`，输入名称为 `chatlog`，选择类型为 `服务器发送事件(sse)`，填写 URL 为 `http://127.0.0.1:5030/sse`，点击 `保存`。（注意：点击保存前不要先点击左侧的开启按钮）
+1. In Settings -> MCP Servers click Add Server, name it `chatlog`, select "Server-Sent Events (sse)" as the type, set the URL to `http://127.0.0.1:5030/sse`, and click Save. (Do not click the enable switch before saving.)
 
 ![cherry-1](https://github.com/user-attachments/assets/93fc8b0a-9d95-499e-ab6c-e22b0c96fd6a)
 
-2. 选择支持 MCP 调用的模型，打开 `chatlog` 工具选项
+2. Choose an MCP-capable model and enable the `chatlog` tool option.
 
 ![cherry-2](https://github.com/user-attachments/assets/4e5bf752-2eab-4e7c-b73b-1b759d4a5f29)
 
-3. 测试功能是否正常
+3. Test the integration.
 
 ![cherry-3](https://github.com/user-attachments/assets/c58a019f-fd5f-4fa3-830a-e81a60f2aa6f)
 
 ## Claude Desktop
 
-- 官网：https://claude.ai/download
-- 使用方式：mcp-proxy
-- 参考资料：https://modelcontextprotocol.io/quickstart/user#2-add-the-filesystem-mcp-server
+- Website: https://claude.ai/download
+- Transport: mcp-proxy
+- Reference: https://modelcontextprotocol.io/quickstart/user#2-add-the-filesystem-mcp-server
 
-1. 请先参考 [mcp-proxy](#mcp-proxy) 安装 `mcp-proxy`
+1. Install `mcp-proxy` (see the mcp-proxy section above).
 
-2. 进入 Claude Desktop `Settings - Developer`，点击 `Edit Config` 按钮，这样会创建一个 `claude_desktop_config.json` 配置文件，并引导你编辑该文件
+2. In Claude Desktop, go to Settings -> Developer and click "Edit Config". This will create and open `claude_desktop_config.json` for editing.
 
-3. 编辑 `claude_desktop_config.json` 文件，配置名称为 `chatlog`，command 为 `mcp-proxy` 的路径，args 为 `http://127.0.0.1:5030/sse`，如下所示：
+3. Edit `claude_desktop_config.json` to add a server named `chatlog`. Set `command` to the path of `mcp-proxy` and `args` to `http://127.0.0.1:5030/sse`, for example:
 
 ```json
 {
@@ -95,24 +95,24 @@ which mcp-proxy
 }
 ```
 
-4. 保存 `claude_desktop_config.json` 文件，重启 Claude Desktop，可以看到 `chatlog` 已经添加成功
+4. Save `claude_desktop_config.json` and restart Claude Desktop. You should see `chatlog` added.
 
 ![claude-1](https://github.com/user-attachments/assets/f4e872cc-e6c1-4e24-97da-266466949cdf)
 
-5. 测试功能是否正常
+5. Test the integration.
 
 ![claude-2](https://github.com/user-attachments/assets/832bb4d2-3639-4cbc-8b17-f4b812ea3637)
 
 
 ## Monica Code
 
-- 官网：https://monica.im/en/code
-- 使用方式：mcp-proxy
-- 参考资料：https://github.com/Monica-IM/Monica-Code/blob/main/Reference/config.md#modelcontextprotocolserver
+- Website: https://monica.im/en/code
+- Transport: mcp-proxy
+- Reference: https://github.com/Monica-IM/Monica-Code/blob/main/Reference/config.md#modelcontextprotocolserver
 
-1. 请先参考 [mcp-proxy](#mcp-proxy) 安装 `mcp-proxy`
+1. Install `mcp-proxy` (see mcp-proxy section above).
 
-2. 在 vscode 插件文件夹（`~/.vscode/extensions`）下找到 Monica Code 的目录，编辑 `config_schema.json` 文件。将 `experimental - modelContextProtocolServer` 中 `transport` 设置为如下内容：
+2. Find the Monica Code extension folder in the VSCode extensions directory (`~/.vscode/extensions`), and edit `config_schema.json`. In `experimental.modelContextProtocolServer`, set `transport` to `stdio`, `command` to the path of `mcp-proxy`, and `args` to `http://localhost:5030/sse`, for example:
 
 ```json
 {
@@ -141,11 +141,11 @@ which mcp-proxy
 }
 ```
 
-3. 重启 vscode，可以看到 `chatlog` 已经添加成功
+3. Restart VSCode; you should see `chatlog` added.
 
 ![monica-1](https://github.com/user-attachments/assets/8d0a96f2-ed05-48aa-a99a-06648ae1c500)
 
-4. 测试功能是否正常
+4. Test the integration.
 
 ![monica-2](https://github.com/user-attachments/assets/054e0a30-428a-48a6-9f31-d2596fb8f743)
 
